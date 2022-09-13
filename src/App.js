@@ -1,19 +1,15 @@
-import "./App.css";
+import styles from "./css/App.module.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import recipes from "./recipes";
+import RecipesList from "./components/RecipesList";
+
+const recipesList = recipes;
 
 function App() {
   return (
-    <div className="App">
-      <h1>Kuchařka</h1>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit.{" "}
-        <span>Aliquam</span>, aliquid?
-      </p>
-      <div>
-        <img
-          src={require("./mike-gattorna-IxBCafdQItg-unsplash.jpg")}
-          alt="cookbook"
-        />
-      </div>
+    <div className={styles.app}>
+      <h1 className={styles.heading}>Kuchařka</h1>
+      <RecipesList recipesList={recipesList} />
     </div>
   );
 }

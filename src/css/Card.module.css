@@ -1,0 +1,30 @@
+.container {
+    display: inline-flex;
+}
+
+.card {
+    width: 18rem;
+    margin: 2rem;
+    box-shadow: 0 2.4rem 4.8rem rgba(0, 0, 0, 0.075);
+    transition: all 0.4s;
+}
+
+.card:hover {
+    transform: translateY(-1.2rem);
+    box-shadow: 0 3.2rem 6.4rem rgba(0, 0, 0, 0.06);
+}
+
+.title {
+    color: #2b8a3e;
+    font-weight: 700;
+    text-align: center;
+}
+
+.text {
+    color: #333;
+    text-align: left;
+}
+
+.icon {
+    margin-right: 10px;
+}
