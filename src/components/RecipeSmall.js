@@ -23,6 +23,14 @@ function RecipeSmall(props) {
           <Card.Text className={styles.text}>
             {props.recipe.description.slice(0, 33) + "..."}
           </Card.Text>
+          <div>
+            <ul className={styles.text}>
+              <li>{props.ingredient[0]}</li>
+              <li>{props.ingredient[1]}</li>
+              <li>{props.ingredient[2]}</li>
+              <li>{props.ingredient[3]}</li>
+            </ul>
+          </div>
         </Card.Body>
       </Card>
     </div>

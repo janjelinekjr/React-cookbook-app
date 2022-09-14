@@ -2,8 +2,17 @@ import React from "react";
 import RecipeSmall from "./RecipeSmall";
 
 function RecipeSmallList(props) {
+  const ingredients = props.ingredientsList;
+
   return props.recipesList.map((recipe) => {
-    return <RecipeSmall key={recipe.id} recipe={recipe} />;
+    return (
+      <RecipeSmall
+        key={recipe.id}
+        recipe={recipe}
+        // ingredientsId={ingredients.find((ing) => ing.id === recipe.id)}
+        ingredient={ingredients.map((i) => [i.name])}
+      />
+    );
   });
 }
 
