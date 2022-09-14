@@ -1,14 +1,79 @@
-import React from "react";
-import Recipe from "./Recipe";
+import React, { useState, useMemo } from "react";
+
+import Navbar from "react-bootstrap/Navbar";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import Icon from "@mdi/react";
+import { mdiTable, mdiListBoxOutline, mdiMagnify } from "@mdi/js";
+import RecipeListView from "./RecipeListView";
+import RecipeTableView from "./RecipeTableView";
 
 function RecipesList(props) {
-  function getRecipesList(allRecipes) {
-    return allRecipes.map((recipe) => {
-      return <Recipe key={recipe.id} recipe={recipe} />;
-    });
+  const [viewType, setViewType] = useState("list");
+  const isList = viewType === "list";
+  const [searchBy, setSearchBy] = useState("");
+
+  function viewHandler() {
+    if (isList) {
+      setViewType("table");
+    } else {
+      setViewType("list");
+    }
   }
 
-  return getRecipesList(props.recipesList);
+  function handleSearch(event) {
+    event.preventDefault();
+    setSearchBy(event.target["searchInput"].value);
+  }
+
+  function handleSearchDelete(event) {
+    if (!event.target.value) setSearchBy("");
+  }
+
+  const filteredRecipes = useMemo(() => {
+    return props.recipesList.filter((input) => {
+      return (
+        input.name.toLowerCase().includes(searchBy.toLowerCase()) ||
+        input.description.toLowerCase().includes(searchBy.toLowerCase())
+      );
+    });
+  }, [searchBy]);
+
+  return (
+    <div>
+      <Navbar bg="light">
+        <div className="container-fluid">
+          <Navbar.Brand>Seznam receptů</Navbar.Brand>
+          <Form className="d-flex" onSubmit={handleSearch}>
+            <Form.Control
+              id={"searchInput"}
+              style={{ maxWidth: "150px" }}
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+              onChange={handleSearchDelete}
+            />
+            <Button
+              style={{ marginRight: "8px" }}
+              variant="outline-success"
+              type="submit"
+            >
+              <Icon size={1} path={mdiMagnify} />
+            </Button>
+            <Button variant="outline-primary" onClick={viewHandler}>
+              <Icon path={isList ? mdiTable : mdiListBoxOutline} size={1} />
+              {isList ? "Tabulka" : "List"}
+            </Button>
+          </Form>
+        </div>
+      </Navbar>
+      {isList ? (
+        <RecipeListView recipesList={filteredRecipes} />
+      ) : (
+        <RecipeTableView recipesList={filteredRecipes} />
+      )}
+    </div>
+  );
 }
 
 export default RecipesList;
