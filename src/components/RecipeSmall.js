@@ -21,7 +21,7 @@ function RecipeSmall(props) {
         <Card.Body>
           <div></div>
           <Card.Text className={styles.text}>
-            {props.recipe.description.slice(0, 30)}
+            {props.recipe.description.slice(0, 33) + "..."}
           </Card.Text>
         </Card.Body>
       </Card>

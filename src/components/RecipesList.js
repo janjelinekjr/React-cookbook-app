@@ -37,7 +37,7 @@ function RecipesList(props) {
         input.description.toLowerCase().includes(searchBy.toLowerCase())
       );
     });
-  }, [searchBy]);
+  }, [searchBy, props.recipesList]);
 
   return (
     <div>
@@ -68,7 +68,10 @@ function RecipesList(props) {
         </div>
       </Navbar>
       {isList ? (
-        <RecipeListView recipesList={filteredRecipes} />
+        <RecipeListView
+          recipesList={filteredRecipes}
+          ingredientsList={props.ingredientsList}
+        />
       ) : (
         <RecipeTableView recipesList={filteredRecipes} />
       )}

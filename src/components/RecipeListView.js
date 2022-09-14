@@ -26,14 +26,17 @@ function RecipeListView(props) {
           <Navbar.Brand>Zobrazení</Navbar.Brand>
           <Button variant="outline-primary" onClick={viewHandler}>
             <Icon path={isFull ? mdiGrid : mdiListBoxOutline} size={1} />
-            {isFull ? "Small" : "Full"}
+            {isFull ? "Malé" : "Velké"}
           </Button>
         </div>
       </Navbar>
       {isFull ? (
         <RecipeFullList recipesList={props.recipesList} />
       ) : (
-        <RecipeSmallList recipesList={props.recipesList} />
+        <RecipeSmallList
+          recipesList={props.recipesList}
+          ingredientsList={props.ingredientsList}
+        />
       )}
     </div>
   );
