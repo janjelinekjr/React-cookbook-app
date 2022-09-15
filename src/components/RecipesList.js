@@ -4,14 +4,28 @@ import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Icon from "@mdi/react";
-import { mdiTable, mdiListBoxOutline, mdiMagnify } from "@mdi/js";
+import {
+  mdiTable,
+  mdiListBoxOutline,
+  mdiMagnify,
+  mdiTextBoxPlusOutline,
+} from "@mdi/js";
 import RecipeListView from "./RecipeListView";
 import RecipeTableView from "./RecipeTableView";
+import NewRecipeForm from "./NewRecipeForm";
 
 function RecipesList(props) {
   const [viewType, setViewType] = useState("list");
   const isList = viewType === "list";
   const [searchBy, setSearchBy] = useState("");
+  const [isModalShown, setIsModalShown] = useState(false);
+
+  function showModalHandler() {
+    setIsModalShown(true);
+  }
+  function closeModalHandler() {
+    setIsModalShown(false);
+  }
 
   function viewHandler() {
     if (isList) {
@@ -66,6 +80,10 @@ function RecipesList(props) {
                 <Icon path={isList ? mdiTable : mdiListBoxOutline} size={1} />
                 {isList ? "Tabulka" : "List"}
               </Button>
+              <Button variant="success" onClick={showModalHandler}>
+                <Icon path={mdiTextBoxPlusOutline} size={1} />
+                Vytvořit recept
+              </Button>
             </Form>
           </Navbar.Collapse>
         </div>
@@ -78,6 +96,13 @@ function RecipesList(props) {
                 recipesList={filteredRecipes}
                 ingredientsList={props.ingredientsList}
               />
+              {isModalShown && (
+                <NewRecipeForm
+                  onClose={closeModalHandler}
+                  onShow={showModalHandler}
+                  ingredientsList={props.ingredientsList}
+                />
+              )}
             </div>
             <div className={"d-block d-md-block"}>
               {isList ? (

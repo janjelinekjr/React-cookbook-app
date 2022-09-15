@@ -4,8 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Icon from "@mdi/react";
 import { mdiLoading } from "@mdi/js";
 import RecipesList from "./components/RecipesList";
-import { Link, Outlet } from "react-router-dom";
-import { Container, Nav, Navbar } from "react-bootstrap";
+import NavbarContainer from "./components/NavbarContainer";
 
 function App() {
   const [recipesLoadCall, setRecipesLoadCall] = useState({ state: "pending" });
@@ -66,7 +65,7 @@ function App() {
       case "error":
         return (
           <div className={styles.error}>
-            <div>Nepodařilo se načíst data o třídě.</div>
+            <div>Nepodařilo se načíst data.</div>
             <br />
             <pre>{JSON.stringify(recipesLoadCall.error, null, 2)}</pre>
           </div>
@@ -78,31 +77,8 @@ function App() {
 
   return (
     <div className={styles.app}>
-      <Navbar bg="light" expand="lg">
-        <Container>
-          <Link className={styles.navTitle} to="/">
-            Recepty.js
-          </Link>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
-              <div className={styles.navContainer}>
-                <Link className={styles.nav} to="/home">
-                  Home
-                </Link>
-                <Link className={styles.nav} to="/recipeList">
-                  Recepty
-                </Link>
-                <Link className={styles.nav} to="/ingredientList">
-                  Ingredience
-                </Link>
-              </div>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
+      <NavbarContainer />
       <div>{getChild()}</div>
-      {/*<Outlet />*/}
     </div>
   );
 }

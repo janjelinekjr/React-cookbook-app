@@ -37,8 +37,8 @@ function RecipeSmall(props) {
           <div>
             <ul className={styles.text}>
               {addNames(props.recipe.ingredients, props.ingredients).map(
-                (el) => {
-                  return <li>{el.name}</li>;
+                (el, i) => {
+                  return <li key={i}>{el.name}</li>;
                 }
               )}
             </ul>
