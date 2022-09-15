@@ -22,12 +22,21 @@ function App() {
     );
   }, []);
 
+  function prepareIngredientsMap(ingredients) {
+    const result = {};
+    ingredients.forEach((element) => {
+      result[element.id] = element.name;
+    });
+    return result;
+  }
+
   useEffect(() => {
     fetch("http://localhost:8000/ingredient/list", { method: "GET" }).then(
       async (response) => {
         const responseJson = await response.json();
         if (response.status <= 400) {
-          setIngredientsLoadCall(responseJson);
+          const ingredientsMap = prepareIngredientsMap(responseJson);
+          setIngredientsLoadCall(ingredientsMap);
         }
       }
     );

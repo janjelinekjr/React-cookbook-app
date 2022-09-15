@@ -9,8 +9,9 @@ function RecipeSmallList(props) {
       <RecipeSmall
         key={recipe.id}
         recipe={recipe}
-        // ingredientsId={ingredients.find((ing) => ing.id === recipe.id)}
-        ingredient={ingredients.map((i) => [i.name])}
+        ingredients={ingredients}
+        // // ingredientsId={ingredients.find((ing) => ing.id === recipe.id)}
+        // ingredient={ingredients.map((i) => [i.name])}
       />
     );
   });

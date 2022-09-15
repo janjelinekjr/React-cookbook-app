@@ -4,6 +4,17 @@ import styles from "../css/CardSmall.module.css";
 import Icon from "@mdi/react";
 import { mdiNutrition } from "@mdi/js";
 
+function addNames(recipeIngredients, ingredientsMap) {
+  return recipeIngredients.slice(0, 4).map((el) => {
+    return {
+      id: el.id,
+      amount: el.amount,
+      unit: el.unit,
+      name: ingredientsMap[el.id],
+    };
+  });
+}
+
 function RecipeSmall(props) {
   return (
     <div className={styles.container}>
@@ -25,10 +36,11 @@ function RecipeSmall(props) {
           </Card.Text>
           <div>
             <ul className={styles.text}>
-              <li>{props.ingredient[0]}</li>
-              <li>{props.ingredient[1]}</li>
-              <li>{props.ingredient[2]}</li>
-              <li>{props.ingredient[3]}</li>
+              {addNames(props.recipe.ingredients, props.ingredients).map(
+                (el) => {
+                  return <li>{el.name}</li>;
+                }
+              )}
             </ul>
           </div>
         </Card.Body>
