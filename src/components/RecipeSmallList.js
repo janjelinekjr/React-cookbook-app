@@ -6,13 +6,7 @@ function RecipeSmallList(props) {
 
   return props.recipesList.map((recipe) => {
     return (
-      <RecipeSmall
-        key={recipe.id}
-        recipe={recipe}
-        ingredients={ingredients}
-        // // ingredientsId={ingredients.find((ing) => ing.id === recipe.id)}
-        // ingredient={ingredients.map((i) => [i.name])}
-      />
+      <RecipeSmall key={recipe.id} recipe={recipe} ingredients={ingredients} />
     );
   });
 }

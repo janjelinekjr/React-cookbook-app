@@ -42,9 +42,6 @@ function App() {
     );
   }, []);
 
-  // console.log(ingredientsLoadCall);
-  // console.log(recipesLoadCall.data);
-
   function getChild() {
     switch (recipesLoadCall.state) {
       case "pending":
