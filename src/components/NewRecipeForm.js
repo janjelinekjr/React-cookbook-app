@@ -1,19 +1,25 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { Col, Row } from "react-bootstrap";
-import { mdiPlus, mdiClose } from "@mdi/js";
+import { mdiPlus, mdiClose, mdiLoading } from "@mdi/js";
 import Icon from "@mdi/react";
 import styles from "../css/NewRecipeForm.module.css";
 
 function NewRecipeForm(props) {
+  // refs
   const titleInputRef = useRef();
   const descInputRef = useRef();
   const ingSelectRef = useRef();
   const sumInputRef = useRef();
   const unitInputRef = useRef();
 
+  // states
+  const [validated, setValidated] = useState(false);
+  const [recipeAddCall, setRecipeAddCall] = useState({ state: "inactive" });
+
+  // get ingredients
   const allIngredientsList = Object.entries(props.ingredientsList);
   const ing = [];
 
@@ -21,8 +27,7 @@ function NewRecipeForm(props) {
     ing.push({ key: key, value: value });
   }
 
-  const [validated, setValidated] = useState(false);
-
+  // form handler
   function submitHandler(e) {
     e.preventDefault();
 
@@ -35,8 +40,9 @@ function NewRecipeForm(props) {
     const form = e.currentTarget;
 
     const formData = {
-      title: enteredTitle,
+      name: enteredTitle,
       description: enteredDesc,
+      imgUri: "",
       ingredients: [
         {
           id: enteredIng,
@@ -46,13 +52,32 @@ function NewRecipeForm(props) {
       ],
     };
 
+    // check form validity
     if (!form.checkValidity()) {
       setValidated(true);
       return;
     }
 
-    console.log(formData);
+    // sending data to server
+    async function addFormDataHandler(formData) {
+      const res = await fetch(`http://localhost:3000/recipe/create`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
+      const data = await res.json();
+
+      if (res.status >= 400) {
+        setRecipeAddCall({ state: "error", error: data });
+      } else {
+        setRecipeAddCall({ state: "success", data });
+      }
+    }
+
+    addFormDataHandler(formData);
+
+    // clear inputs
     titleInputRef.current.value = "";
     descInputRef.current.value = "";
     ingSelectRef.current.value = "";
@@ -151,12 +176,30 @@ function NewRecipeForm(props) {
             </Col>
           </Row>
           <Modal.Footer>
+            <div>
+              {recipeAddCall.state === "error" && (
+                <div className="text-danger">
+                  Error: {recipeAddCall.error.errorMessage}
+                </div>
+              )}
+            </div>
             <Button variant="secondary" onClick={props.onClose}>
               <Icon path={mdiClose} size={1} />
               Zavřít
             </Button>
-            <Button type={"submit"} variant="primary">
-              <Icon path={mdiPlus} size={1} /> Vytvořit
+            <Button
+              type="submit"
+              variant="primary"
+              disabled={recipeAddCall.state === "pending"}
+            >
+              {recipeAddCall.state === "pending" ? (
+                <Icon size={0.8} path={mdiLoading} spin={true} />
+              ) : (
+                <div>
+                  <Icon path={mdiPlus} size={1} />
+                  Vytvořit
+                </div>
+              )}
             </Button>
           </Modal.Footer>
         </Form>
