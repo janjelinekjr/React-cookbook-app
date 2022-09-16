@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -15,6 +15,7 @@ function NewRecipeForm(props) {
   const unitInputRef = useRef();
 
   const allIngredientsList = Object.values(props.ingredientsList);
+  const [validated, setValidated] = useState(false);
 
   function submitHandler(e) {
     e.preventDefault();
@@ -22,8 +23,10 @@ function NewRecipeForm(props) {
     const enteredTitle = titleInputRef.current.value;
     const enteredDesc = descInputRef.current.value;
     const enteredIng = ingSelectRef.current.value;
-    const enteredSum = sumInputRef.current.value;
+    const enteredSum = parseInt(sumInputRef.current.value);
     const enteredUnit = unitInputRef.current.value;
+
+    const form = e.currentTarget;
 
     const formData = {
       title: enteredTitle,
@@ -32,6 +35,11 @@ function NewRecipeForm(props) {
       sum: enteredSum,
       unit: enteredUnit,
     };
+
+    if (!form.checkValidity()) {
+      setValidated(true);
+      return;
+    }
 
     console.log(formData);
 
@@ -49,18 +57,36 @@ function NewRecipeForm(props) {
       </Modal.Header>
 
       <Modal.Body>
-        <Form onSubmit={submitHandler}>
+        <Form noValidate validated={validated} onSubmit={submitHandler}>
           <Row className="align-items-center">
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>Název</Form.Label>
-              <Form.Control ref={titleInputRef} type="text" placeholder="" />
+              <Form.Control
+                ref={titleInputRef}
+                type="text"
+                placeholder=""
+                required
+                maxLength={32}
+              />
+              <Form.Control.Feedback type="invalid">
+                Zadejte název receptu s maximální délkou 32 znaků
+              </Form.Control.Feedback>
             </Form.Group>
             <Form.Group
               className="mb-3"
               controlId="exampleForm.ControlTextarea1"
             >
               <Form.Label>Postup</Form.Label>
-              <Form.Control ref={descInputRef} as="textarea" rows={7} />
+              <Form.Control
+                ref={descInputRef}
+                as="textarea"
+                rows={7}
+                required
+                maxLength={1000}
+              />
+              <Form.Control.Feedback type="invalid">
+                Zadejte postup s maximální délkou 1000 znaků
+              </Form.Control.Feedback>
             </Form.Group>
             <Col xs={"7"}>
               <Form.Group className={styles.ing}>
@@ -68,6 +94,7 @@ function NewRecipeForm(props) {
                 <Form.Select
                   ref={ingSelectRef}
                   aria-label="Default select example"
+                  required
                 >
                   <option>Vybrat ingredience</option>
                   {allIngredientsList.map((ing, i) => {
@@ -86,7 +113,14 @@ function NewRecipeForm(props) {
                 controlId="exampleForm.ControlInput1"
               >
                 <Form.Label>Počet</Form.Label>
-                <Form.Control ref={sumInputRef} type="number" placeholder="" />
+                <Form.Control
+                  ref={sumInputRef}
+                  type="number"
+                  placeholder=""
+                  min={1}
+                  required
+                />
+                <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
               </Form.Group>{" "}
             </Col>
             <Col>
@@ -95,7 +129,14 @@ function NewRecipeForm(props) {
                 controlId="exampleForm.ControlInput1"
               >
                 <Form.Label>Jednotka</Form.Label>
-                <Form.Control ref={unitInputRef} type="text" placeholder="" />
+                <Form.Control
+                  ref={unitInputRef}
+                  type="text"
+                  placeholder=""
+                  maxLength={10}
+                  required
+                />
+                <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
               </Form.Group>{" "}
             </Col>
           </Row>
