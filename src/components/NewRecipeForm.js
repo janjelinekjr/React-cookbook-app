@@ -14,7 +14,13 @@ function NewRecipeForm(props) {
   const sumInputRef = useRef();
   const unitInputRef = useRef();
 
-  const allIngredientsList = Object.values(props.ingredientsList);
+  const allIngredientsList = Object.entries(props.ingredientsList);
+  const ing = [];
+
+  for (const [key, value] of allIngredientsList) {
+    ing.push({ key: key, value: value });
+  }
+
   const [validated, setValidated] = useState(false);
 
   function submitHandler(e) {
@@ -31,9 +37,13 @@ function NewRecipeForm(props) {
     const formData = {
       title: enteredTitle,
       description: enteredDesc,
-      ingredients: enteredIng,
-      sum: enteredSum,
-      unit: enteredUnit,
+      ingredients: [
+        {
+          id: enteredIng,
+          amount: enteredSum,
+          unit: enteredUnit,
+        },
+      ],
     };
 
     if (!form.checkValidity()) {
@@ -97,10 +107,10 @@ function NewRecipeForm(props) {
                   required
                 >
                   <option>Vybrat ingredience</option>
-                  {allIngredientsList.map((ing, i) => {
+                  {ing.map((ing, i) => {
                     return (
-                      <option key={i} value={i}>
-                        {ing}
+                      <option key={i} value={ing.key}>
+                        {ing.value}
                       </option>
                     );
                   })}
