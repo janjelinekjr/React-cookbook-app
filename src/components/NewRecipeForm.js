@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { createRef, useEffect, useRef, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -9,7 +9,7 @@ import styles from "../css/NewRecipeForm.module.css";
 
 function NewRecipeForm(props) {
   // refs
-  const titleInputRef = useRef();
+  let titleInputRef = useRef();
   const descInputRef = useRef();
   const ingSelectRef = useRef();
   const sumInputRef = useRef();
@@ -52,19 +52,49 @@ function NewRecipeForm(props) {
       ],
     };
 
+    // edit current recipe
+    let editedFormData;
+
+    function editCurrRecipe() {
+      const currRecipe = props.recipesList.find(
+        (recipe) => recipe.id === props.recipeId
+      );
+      return (editedFormData = {
+        id: currRecipe.id,
+        name: enteredTitle,
+        description: enteredDesc,
+        imgUri: "",
+        ingredients: [
+          {
+            id: enteredIng,
+            amount: enteredSum,
+            unit: enteredUnit,
+          },
+        ],
+      });
+    }
+
+    if (props.edit) {
+      editCurrRecipe();
+      console.log(editedFormData);
+    }
+
     // check form validity
     if (!form.checkValidity()) {
       setValidated(true);
       return;
     }
 
-    // sending data to server
+    // sending data to server (create/update)
     async function addFormDataHandler(formData) {
-      const res = await fetch(`http://localhost:3000/recipe/create`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const res = await fetch(
+        `http://localhost:3000/recipe/${props.edit ? "update" : "create"}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        }
+      );
 
       const data = await res.json();
 
@@ -75,7 +105,7 @@ function NewRecipeForm(props) {
       }
     }
 
-    addFormDataHandler(formData);
+    addFormDataHandler(props.edit ? editedFormData : formData);
 
     // clear inputs
     titleInputRef.current.value = "";
@@ -88,7 +118,7 @@ function NewRecipeForm(props) {
   return (
     <Modal show={props.onShow} onHide={props.onClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Vytvořit recept</Modal.Title>
+        <Modal.Title>{props.edit ? "Upravit" : "Vytvořit"} recept</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -131,7 +161,7 @@ function NewRecipeForm(props) {
                   aria-label="Default select example"
                   required
                 >
-                  <option>Vybrat ingredience</option>
+                  <option value={""}>Vybrat ingredience</option>
                   {ing.map((ing, i) => {
                     return (
                       <option key={i} value={ing.key}>
@@ -196,8 +226,13 @@ function NewRecipeForm(props) {
                 <Icon size={0.8} path={mdiLoading} spin={true} />
               ) : (
                 <div>
-                  <Icon path={mdiPlus} size={1} />
-                  Vytvořit
+                  {props.edit ? (
+                    "Upravit"
+                  ) : (
+                    <div>
+                      <Icon path={mdiPlus} size={1} /> Vytvořit
+                    </div>
+                  )}
                 </div>
               )}
             </Button>

@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import Table from "react-bootstrap/Table";
 import styles from "../css/RecipeTableView.module.css";
+import Icon from "@mdi/react";
+import { mdiPencilOutline } from "@mdi/js";
+import Button from "react-bootstrap/Button";
 
 function RecipeTableView(props) {
   return (
@@ -16,7 +19,17 @@ function RecipeTableView(props) {
         {props.recipesList.map((recipe) => {
           return (
             <tr key={recipe.id}>
-              <td className={styles.text}>{recipe.name}</td>
+              <td className={styles.text}>
+                {recipe.name}{" "}
+                <Button
+                  variant="light"
+                  onClick={() => {
+                    props.onShow(recipe.id);
+                  }}
+                >
+                  <Icon path={mdiPencilOutline} size={1} color="#2b8a3e" />
+                </Button>
+              </td>
               <td className={styles.text}>{recipe.id}</td>
               <td className={styles.text}>{recipe.ingredients.length}</td>
             </tr>

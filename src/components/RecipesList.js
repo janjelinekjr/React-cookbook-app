@@ -13,16 +13,29 @@ import {
 import RecipeListView from "./RecipeListView";
 import RecipeTableView from "./RecipeTableView";
 import NewRecipeForm from "./NewRecipeForm";
+import recipe from "./Recipe";
 
 function RecipesList(props) {
+  // states
   const [viewType, setViewType] = useState("list");
   const isList = viewType === "list";
   const [searchBy, setSearchBy] = useState("");
   const [isModalShown, setIsModalShown] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
+  const [recipeId, setRecipeId] = useState("");
+
+  // handlers
+  function editShowHandler(id) {
+    setShowEdit(true);
+    setIsModalShown(true);
+    setRecipeId(id);
+  }
 
   function showModalHandler() {
+    setShowEdit(false);
     setIsModalShown(true);
   }
+
   function closeModalHandler() {
     setIsModalShown(false);
   }
@@ -101,6 +114,9 @@ function RecipesList(props) {
                   onClose={closeModalHandler}
                   onShow={showModalHandler}
                   ingredientsList={props.ingredientsList}
+                  recipesList={props.recipesList}
+                  recipeId={recipeId}
+                  edit={showEdit}
                 />
               )}
             </div>
@@ -111,7 +127,11 @@ function RecipesList(props) {
                   ingredientsList={props.ingredientsList}
                 />
               ) : (
-                <RecipeTableView recipesList={filteredRecipes} />
+                <RecipeTableView
+                  onShow={editShowHandler}
+                  recipesList={filteredRecipes}
+                  recipe={recipe}
+                />
               )}
             </div>
           </div>

@@ -28,3 +28,9 @@
 .icon {
     margin-right: 10px;
 }
+
+.editBtn {
+    max-height: 40px;
+    max-width: 40px;
+    margin-left: 5px;
+}

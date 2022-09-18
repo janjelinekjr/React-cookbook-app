@@ -10,7 +10,7 @@ function Recipe(props) {
       <Card className={styles.card}>
         <Card.Img variant="top" src={props.recipe.imgUri} />
         <Card.Body>
-          <div>
+          <div className={styles.container}>
             <Card.Title className={styles.title}>
               <Icon
                 className={styles.icon}
