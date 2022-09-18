@@ -1,6 +1,6 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
-import styles from "../css/CardSmall.module.css";
+import styles from "../css/RecipeSmall.module.css";
 import Icon from "@mdi/react";
 import { mdiNutrition } from "@mdi/js";
 

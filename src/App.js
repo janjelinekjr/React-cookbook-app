@@ -10,6 +10,7 @@ function App() {
   const [recipesLoadCall, setRecipesLoadCall] = useState({ state: "pending" });
   const [ingredientsLoadCall, setIngredientsLoadCall] = useState("");
 
+  // fetching data (recipes and ingredients)
   useEffect(() => {
     fetch("http://localhost:8000/recipe/list", { method: "GET" }).then(
       async (response) => {
