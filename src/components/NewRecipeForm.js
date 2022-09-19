@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -6,8 +6,10 @@ import { Col, Row } from "react-bootstrap";
 import { mdiPlus, mdiClose, mdiLoading } from "@mdi/js";
 import Icon from "@mdi/react";
 import styles from "../css/NewRecipeForm.module.css";
+import FetchDataContext from "../store/FetchDataProvider";
 
 function NewRecipeForm(props) {
+  const { isDataUpdated, setIsDataUpdated } = useContext(FetchDataContext);
   // refs
   let titleInputRef = useRef();
   const descInputRef = useRef();
@@ -38,6 +40,7 @@ function NewRecipeForm(props) {
       id: currRecipe.id,
       title: currRecipe.name,
       description: currRecipe.description,
+      ingredients: currRecipe.ingredients.find((e) => e !== undefined),
     });
   }
 
@@ -114,6 +117,7 @@ function NewRecipeForm(props) {
         setRecipeAddCall({ state: "error", error: data });
       } else {
         setRecipeAddCall({ state: "success", data });
+        setIsDataUpdated(!isDataUpdated);
       }
     }
 
@@ -139,6 +143,7 @@ function NewRecipeForm(props) {
                 ref={ingSelectRef}
                 aria-label="Default select example"
                 required
+                defaultValue={props.edit ? currentRecipe.ingredients.id : ""}
               >
                 <option value={""}>Vybrat ingredience</option>
                 {ing.map((ing, i) => {
@@ -160,6 +165,9 @@ function NewRecipeForm(props) {
                 placeholder=""
                 min={1}
                 required
+                defaultValue={
+                  props.edit ? currentRecipe.ingredients.amount : ""
+                }
               />
               <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
             </Form.Group>{" "}
@@ -173,6 +181,7 @@ function NewRecipeForm(props) {
                 placeholder=""
                 maxLength={10}
                 required
+                defaultValue={props.edit ? currentRecipe.ingredients.unit : ""}
               />
               <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
             </Form.Group>{" "}

@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { mdiTrashCanOutline } from "@mdi/js";
 import Icon from "@mdi/react";
 import Button from "react-bootstrap/Button";
 import ConfirmationDelete from "./ConfirmationDelete";
+import FetchDataContext from "../store/FetchDataProvider";
 
 function RecipeDelete({ recipeId, onDelete, onError }) {
+  const { isDataUpdated, setIsDataUpdated } = useContext(FetchDataContext);
   const [deleteRecipeCall, setDeleteRecipeCall] = useState({
     state: "inactive",
   });
@@ -33,6 +35,7 @@ function RecipeDelete({ recipeId, onDelete, onError }) {
       }
     } else {
       setDeleteRecipeCall({ state: "success", data });
+      setIsDataUpdated(!isDataUpdated);
       if (typeof onDelete === "function") {
         onDelete(recipeId);
       }

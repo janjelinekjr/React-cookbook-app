@@ -1,28 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styles from "./css/App.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Icon from "@mdi/react";
 import { mdiLoading } from "@mdi/js";
 import RecipesList from "./components/RecipesList";
 import NavbarContainer from "./components/NavbarContainer";
+import FetchDataContext from "./store/FetchDataProvider";
 
 function App() {
-  const [recipesLoadCall, setRecipesLoadCall] = useState({ state: "pending" });
+  const { recipesLoadCall } = useContext(FetchDataContext);
   const [ingredientsLoadCall, setIngredientsLoadCall] = useState("");
-
-  // fetching data (recipes and ingredients)
-  useEffect(() => {
-    fetch("http://localhost:8000/recipe/list", { method: "GET" }).then(
-      async (response) => {
-        const responseJSON = await response.json();
-        if (response.status >= 400) {
-          setRecipesLoadCall({ state: "error", error: responseJSON });
-        } else {
-          setRecipesLoadCall({ state: "success", data: responseJSON });
-        }
-      }
-    );
-  }, []);
 
   function prepareIngredientsMap(ingredients) {
     const result = {};
