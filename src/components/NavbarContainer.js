@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import styles from "../css/NavbarContainer.module.css";
+import Button from "react-bootstrap/Button";
+import UserContext from "../store/UserProvider";
 
 function NavbarContainer() {
+  const { isAuthorized, handleLoggin } = useContext(UserContext);
+
   return (
     <Navbar bg="light" expand="lg">
       <Container>
@@ -25,6 +29,9 @@ function NavbarContainer() {
               </Link>
             </div>
           </Nav>
+          <Button onClick={handleLoggin} variant="secondary">
+            {isAuthorized ? "Odhlásit" : "Přihlásit"}
+          </Button>{" "}
         </Navbar.Collapse>
       </Container>
     </Navbar>

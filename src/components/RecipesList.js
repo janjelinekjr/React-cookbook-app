@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useContext } from "react";
 
 import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/Button";
@@ -14,8 +14,10 @@ import RecipeListView from "./RecipeListView";
 import RecipeTableView from "./RecipeTableView";
 import NewRecipeForm from "./NewRecipeForm";
 import recipe from "./Recipe";
+import UserContext from "../store/UserProvider";
 
 function RecipesList(props) {
+  const { isAuthorized } = useContext(UserContext);
   // states
   const [viewType, setViewType] = useState("list");
   const isList = viewType === "list";
@@ -93,10 +95,14 @@ function RecipesList(props) {
                 <Icon path={isList ? mdiTable : mdiListBoxOutline} size={1} />
                 {isList ? "Tabulka" : "List"}
               </Button>
-              <Button variant="success" onClick={showModalHandler}>
-                <Icon path={mdiTextBoxPlusOutline} size={1} />
-                Vytvořit recept
-              </Button>
+              {isAuthorized ? (
+                <Button variant="success" onClick={showModalHandler}>
+                  <Icon path={mdiTextBoxPlusOutline} size={1} />
+                  Vytvořit recept
+                </Button>
+              ) : (
+                ""
+              )}
             </Form>
           </Navbar.Collapse>
         </div>

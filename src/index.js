@@ -7,19 +7,22 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import RecipeList from "./routes/RecipeList";
 import RecipeDetail from "./routes/RecipeDetail";
 import IngredientList from "./routes/IngredientList";
+import { UserProvider } from "./store/UserProvider";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route exact path="/" element={<App />} />
-        <Route path="/home" element={<App />} />
-        <Route path="/recipeList" element={<RecipeList />} />
-        <Route path="/recipeDetail" element={<RecipeDetail />} />
-        <Route path="/ingredientList" element={<IngredientList />} />
-      </Routes>
-    </BrowserRouter>
+    <UserProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route exact path="/" element={<App />} />
+          <Route path="/home" element={<App />} />
+          <Route path="/recipeList" element={<RecipeList />} />
+          <Route path="/recipeDetail" element={<RecipeDetail />} />
+          <Route path="/ingredientList" element={<IngredientList />} />
+        </Routes>
+      </BrowserRouter>
+    </UserProvider>
   </React.StrictMode>
 );
 
