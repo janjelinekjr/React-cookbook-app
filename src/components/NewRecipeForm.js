@@ -114,7 +114,6 @@ function NewRecipeForm(props) {
         setRecipeAddCall({ state: "error", error: data });
       } else {
         setRecipeAddCall({ state: "success", data });
-        console.log(data);
       }
     }
 

@@ -95,13 +95,11 @@ function RecipesList(props) {
                 <Icon path={isList ? mdiTable : mdiListBoxOutline} size={1} />
                 {isList ? "Tabulka" : "List"}
               </Button>
-              {isAuthorized ? (
+              {isAuthorized && (
                 <Button variant="success" onClick={showModalHandler}>
                   <Icon path={mdiTextBoxPlusOutline} size={1} />
                   Vytvořit recept
                 </Button>
-              ) : (
-                ""
               )}
             </Form>
           </Navbar.Collapse>

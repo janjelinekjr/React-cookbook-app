@@ -1,13 +1,16 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Table from "react-bootstrap/Table";
 import styles from "../css/RecipeTableView.module.css";
 import Icon from "@mdi/react";
 import { mdiPencilOutline } from "@mdi/js";
 import Button from "react-bootstrap/Button";
 import UserContext from "../store/UserProvider";
+import RecipeDelete from "./RecipeDelete";
+import { Alert } from "react-bootstrap";
 
 function RecipeTableView(props) {
   const { isAuthorized } = useContext(UserContext);
+  const [deleteGradeError, setDeleteGradeError] = useState("");
 
   return (
     <Table>
@@ -24,17 +27,24 @@ function RecipeTableView(props) {
             <tr key={recipe.id}>
               <td className={styles.text}>
                 {recipe.name}{" "}
-                {isAuthorized ? (
-                  <Button
-                    variant="light"
-                    onClick={() => {
-                      props.onShow(recipe.id);
-                    }}
-                  >
-                    <Icon path={mdiPencilOutline} size={1} color="#2b8a3e" />
-                  </Button>
-                ) : (
-                  ""
+                {isAuthorized && (
+                  <div className={styles.editContainer}>
+                    <Button
+                      variant="light"
+                      onClick={() => {
+                        props.onShow(recipe.id);
+                      }}
+                    >
+                      <Icon path={mdiPencilOutline} size={1} color="#2b8a3e" />
+                    </Button>
+                    <RecipeDelete
+                      onError={(error) => setDeleteGradeError(error)}
+                      recipeId={recipe.id}
+                    />
+                  </div>
+                )}
+                {deleteGradeError && (
+                  <Alert variant="danger">Error: {deleteGradeError}</Alert>
                 )}
               </td>
               <td className={styles.text}>{recipe.id}</td>
