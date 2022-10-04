@@ -16,15 +16,18 @@ function RecipeDelete({ recipeId, onDelete, onError }) {
       return setDeleteRecipeCall({ state: "pending" });
     }
 
-    const res = await fetch(`http://localhost:3000/recipe/delete`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: recipeId,
-      }),
-    });
+    const res = await fetch(
+      `https://cookbook-app-server.herokuapp.com/recipe/delete`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: recipeId,
+        }),
+      }
+    );
 
     const data = await res.json();
 

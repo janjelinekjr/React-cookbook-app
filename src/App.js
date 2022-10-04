@@ -20,15 +20,15 @@ function App() {
   }
 
   useEffect(() => {
-    fetch("http://localhost:8000/ingredient/list", { method: "GET" }).then(
-      async (response) => {
-        const responseJson = await response.json();
-        if (response.status <= 400) {
-          const ingredientsMap = prepareIngredientsMap(responseJson);
-          setIngredientsLoadCall(ingredientsMap);
-        }
+    fetch("https://cookbook-app-server.herokuapp.com/ingredient/list", {
+      method: "GET",
+    }).then(async (response) => {
+      const responseJson = await response.json();
+      if (response.status <= 400) {
+        const ingredientsMap = prepareIngredientsMap(responseJson);
+        setIngredientsLoadCall(ingredientsMap);
       }
-    );
+    });
   }, []);
 
   function getChild() {

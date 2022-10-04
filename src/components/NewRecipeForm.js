@@ -103,7 +103,9 @@ function NewRecipeForm(props) {
     // send data to server (create/update)
     async function addFormDataHandler(formData) {
       const res = await fetch(
-        `http://localhost:3000/recipe/${props.edit ? "update" : "create"}`,
+        `https://cookbook-app-server.herokuapp.com/recipe/${
+          props.edit ? "update" : "create"
+        }`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

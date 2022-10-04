@@ -8,16 +8,16 @@ export function FetchDataProvider(props) {
 
   // fetching data (recipes and ingredients)
   useEffect(() => {
-    fetch("http://localhost:8000/recipe/list", { method: "GET" }).then(
-      async (response) => {
-        const responseJSON = await response.json();
-        if (response.status >= 400) {
-          setRecipesLoadCall({ state: "error", error: responseJSON });
-        } else {
-          setRecipesLoadCall({ state: "success", data: responseJSON });
-        }
+    fetch("https://cookbook-app-server.herokuapp.com/recipe/list", {
+      method: "GET",
+    }).then(async (response) => {
+      const responseJSON = await response.json();
+      if (response.status >= 400) {
+        setRecipesLoadCall({ state: "error", error: responseJSON });
+      } else {
+        setRecipesLoadCall({ state: "success", data: responseJSON });
       }
-    );
+    });
   }, [isDataUpdated]);
 
   const value = {
