@@ -2,7 +2,6 @@
   "homepage": "https://janjelinekjr.github.io/React-cookbook-app-client",
   "name": "client",
   "version": "0.1.0",
-  "proxy": "http://localhost:8000",
   "private": true,
   "dependencies": {
     "@mdi/js": "^7.0.96",
