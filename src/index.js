@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import RecipeList from "./routes/RecipeList";
 import RecipeDetail from "./routes/RecipeDetail";
 import IngredientList from "./routes/IngredientList";
@@ -15,7 +15,7 @@ root.render(
   <React.StrictMode>
     <FetchDataProvider>
       <UserProvider>
-        <BrowserRouter>
+        <HashRouter>
           <Routes>
             <Route exact path="/" element={<App />} />
             <Route path="/home" element={<App />} />
@@ -23,7 +23,7 @@ root.render(
             <Route path="/recipeDetail" element={<RecipeDetail />} />
             <Route path="/ingredientList" element={<IngredientList />} />
           </Routes>
-        </BrowserRouter>
+        </HashRouter>
       </UserProvider>
     </FetchDataProvider>
   </React.StrictMode>
